@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register | Campus Issue Reporter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:linear-gradient(135deg,#1d2b64,#f8cdda);
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+    .card{
+      width:380px;
+      background:white;
+      padding:30px;
+      border-radius:14px;
+      box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    }
+    h2{
+      text-align:center;
+      color:#1d2b64;
+      margin-bottom:20px;
+    }
+    input{
+      width:100%;
+      padding:14px;
+      margin:10px 0;
+      border-radius:10px;
+      border:1px solid #ccc;
+      font-size:15px;
+    }
+    button{
+      width:100%;
+      padding:14px;
+      background:#1d2b64;
+      color:white;
+      border:none;
+      border-radius:10px;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:10px;
+    }
+    button:hover{background:#141e46;}
+    .link{
+      text-align:center;
+      margin-top:15px;
+    }
+    a{color:#1d2b64;text-decoration:none;font-weight:bold;}
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Create Account</h2>
+
+  <input id="name" placeholder="Full Name">
+  <input id="email" type="email" placeholder="Email Address">
+  <input id="mobile" placeholder="Mobile Number">
+  <input id="password" type="password" placeholder="Password">
+
+  <button onclick="register()">Register</button>
+
+  <div class="link">
+    Already registered? <a href="login.html">Login</a>
+  </div>
+</div>
+
+<script>
+function register(){
+  const nameVal = document.getElementById("name").value.trim();
+  const emailVal = document.getElementById("email").value.trim();
+  const mobileVal = document.getElementById("mobile").value.trim();
+  const passVal = document.getElementById("password").value.trim();
+
+  if(nameVal === "" || emailVal === "" || mobileVal === "" || passVal === ""){
+    alert("Please fill all fields");
+    return;
+  }
+
+  const user = {
+    name: nameVal,
+    email: emailVal,
+    mobile: mobileVal,
+    password: passVal
+  };
+
+  localStorage.setItem("user", JSON.stringify(user));
+  alert("Registration Successful!");
+  window.location.href = "login.html";
+}
+</script>
+</body>
+</html>

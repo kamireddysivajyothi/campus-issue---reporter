@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Global Campus Issue Reporter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    /* Base */
+    body{
+      margin:0;
+      font-family:Arial, sans-serif;
+      background:linear-gradient(120deg,#3a7bd5,#00d2ff);
+      min-height:100vh;
+    }
+
+    .topbar{
+      background:#0b3d91;
+      color:white;
+      padding:15px;
+      text-align:center;
+      font-size:18px;
+      font-weight:bold;
+      position:relative;
+    }
+
+    .container{
+      max-width:500px;
+      margin:30px auto;
+      background:white;
+      padding:25px;
+      border-radius:14px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h3{
+      text-align:center;
+      color:#0b3d91;
+      margin-bottom:20px;
+    }
+
+    label{
+      font-weight:bold;
+      display:block;
+      margin-top:10px;
+    }
+
+    select, textarea, button{
+      width:100%;
+      padding:12px;
+      margin-top:6px;
+      border-radius:10px;
+      border:1px solid #ccc;
+      font-size:14px;
+    }
+
+    textarea{
+      min-height:100px;
+      resize:none;
+    }
+
+    button{
+      background:#dd2476;
+      color:white;
+      font-weight:bold;
+      border:none;
+      cursor:pointer;
+      margin-top:20px;
+    }
+
+    button:hover{
+      background:#c31432;
+    }
+
+    /* Dark Mode */
+    body.dark{
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    }
+
+    body.dark .container{
+      background:#1e1e1e;
+      color:white;
+    }
+
+    body.dark .topbar{
+      background:#111;
+    }
+
+    body.dark select,
+    body.dark textarea{
+      background:#2b2b2b;
+      color:white;
+      border:1px solid #555;
+    }
+
+    body.dark label,
+    body.dark h3{
+      color:white;
+    }
+
+    body.dark button{
+      background:#4facfe;
+    }
+
+    /* Dark Toggle */
+    .dark-toggle{
+      position:fixed;
+      top:15px;
+      right:15px;
+      padding:10px 14px;
+      border-radius:50%;
+      border:none;
+      cursor:pointer;
+      font-size:18px;
+      background:#111;
+      color:white;
+      box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Logout */
+    .logout{
+      position:absolute;
+      right:15px;
+      top:15px;
+      background:#ff5252;
+      border:none;
+      color:white;
+      padding:6px 12px;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Login Protection -->
+<script>
+if(localStorage.getItem("loggedIn") !== "true"){
+  window.location.href = "login.html";
+}
+</script>
+
+<button class="dark-toggle" onclick="toggleDark()">🌙</button>
+
+<div class="topbar">
+  Global Campus Issue Reporter
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="container">
+  <h3>Report an Issue</h3>
+
+  <label>Institute</label>
+  <select id="institute">
+    <option value="">Select Institute</option>
+    <option>Siddartha Institute of Science and Technology</option>
+    <option>National Institute of Technology</option>
+    <option>Indian Institute of Technology</option>
+    <option>Anna University</option>
+    <option>Jawaharlal Nehru Technological University</option>
+    <option>Vellore Institute of Technology</option>
+    <option>SRM Institute of Science and Technology</option>
+  </select>
+
+  <label>Category</label>
+  <select id="category">
+    <option value="">Select Category</option>
+    <option>Electricity Failure</option>
+    <option>Hostel Maintenance</option>
+    <option>Dirty Washrooms</option>
+    <option>Security Problem</option>
+  </select>
+
+  <label>Description</label>
+  <textarea id="desc" placeholder="Describe the issue clearly..."></textarea>
+
+  <button onclick="submitIssue()">Submit Issue</button>
+</div>
+
+<script>
+/* Submit Issue */
+function submitIssue(){
+  const institute = document.getElementById("institute").value;
+  const category = document.getElementById("category").value;
+  const desc = document.getElementById("desc").value.trim();
+
+  if(institute === "" || category === "" || desc === ""){
+    alert("Please fill all fields");
+    return;
+  }
+
+  const issue = {
+    id: Date.now(),
+    institute,
+    category,
+    description: desc,
+    status: "Pending",
+    date: new Date().toLocaleString()
+  };
+
+  let issues = JSON.parse(localStorage.getItem("issues")) || [];
+  issues.push(issue);
+  localStorage.setItem("issues", JSON.stringify(issues));
+
+  window.location.href = "success.html";
+}
+
+/* Dark Mode */
+function toggleDark(){
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("darkMode", isDark);
+  document.querySelector(".dark-toggle").innerHTML = isDark ? "☀️" : "🌙";
+}
+
+if(localStorage.getItem("darkMode") === "true"){
+  document.body.classList.add("dark");
+  document.querySelector(".dark-toggle").innerHTML = "☀️";
+}
+
+/* Logout */
+function logout(){
+  localStorage.removeItem("loggedIn");
+  window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
